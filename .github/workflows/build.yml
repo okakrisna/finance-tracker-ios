@@ -1,0 +1,47 @@
+name: Build FinanceTracker iOS IPA
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build iOS App
+        run: |
+          xcodebuild clean build \
+            -project FinanceTracker.xcodeproj \
+            -scheme FinanceTracker \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            BUILD_DIR=./build
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          APP_PATH=$(find ./build/Release-iphoneos -name "*.app" -maxdepth 1 | head -n 1)
+          echo "Found app at: $APP_PATH"
+          cp -r "$APP_PATH" Payload/
+          zip -qr FinanceTracker.ipa Payload
+          ls -lh FinanceTracker.ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FinanceTracker-IPA
+          path: FinanceTracker.ipa

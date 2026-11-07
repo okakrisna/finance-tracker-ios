@@ -1,0 +1,25 @@
+name: FinanceTracker
+options:
+  bundleIdPrefix: com.okakrisna
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+targets:
+  FinanceTracker:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: FinanceTracker
+    settings:
+      base:
+        PRODUCT_NAME: "Finance Tracker"
+        PRODUCT_BUNDLE_IDENTIFIER: com.okakrisna.financetracker
+        INFOPLIST_FILE: FinanceTracker/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: "NO"
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGN_IDENTITY: ""
+        AD_HOC_CODE_SIGNING_ALLOWED: "YES"
